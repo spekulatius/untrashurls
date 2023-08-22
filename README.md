@@ -3,7 +3,7 @@
 Removes various usually irrelevant URL pieces from a file containing URLs or STDIN:
 
 - `http://....:80/` => `http://..../`
-- `https://....:443/` => `http://..../`
+- `https://....:443/` => `https://..../`
 - `?utm_*` => `/dev/null`
 - `?att_*` => `/dev/null`
 
