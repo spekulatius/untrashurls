@@ -23,7 +23,7 @@ untrashurls --file ./lots-of-urls
 
 ## `filter-static-urls`: The `urinteresting`-mode
 
-Inspired by Tomnomnom's [urinteresting](https://github.com/tomnomnom/hacks/tree/master/urinteresting) there is a helper script to achieve a similar output:
+Inspired by Tomnomnom's [`urinteresting`](https://github.com/tomnomnom/hacks/tree/master/urinteresting) there is a helper script to achieve a similar output:
 
 
 ```bash
@@ -36,7 +36,9 @@ or
 untrashurls --file ./lots-of-urls | filter-static-urls
 ```
 
-This will drop any static assets.
+This will drop any static assets. For a detailed list of dropped extensions check the script.
+
+More detailed checks are provided by `urinteresting`.
 
 ## Installation
 
@@ -50,4 +52,3 @@ mv /tmp/trurl/trurl /home/$USER/.local/
 cd -
 rm -rf /tmp/trurl
 ```
-
