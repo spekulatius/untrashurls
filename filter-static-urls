@@ -1,0 +1,33 @@
+#!/bin/bash
+
+while IFS= read -r url; do
+    # Get the file extension from the URL
+    extension="${url##*.}"
+
+    # Convert the extension to lowercase for comparison
+    extension_lc="${extension,,}"
+
+    # Check if the extension matches common static asset types
+    if [[ 
+        "$extension_lc" == "html" ||
+        "$extension_lc" == "pdf" ||
+        "$extension_lc" == "css" ||
+        "$extension_lc" == "js" ||
+        "$extension_lc" == "png" ||
+        "$extension_lc" == "jpg" ||
+        "$extension_lc" == "jpeg" ||
+        "$extension_lc" == "gif" ||
+        "$extension_lc" == "svg" ||
+        "$extension_lc" == "ico" ||
+        "$extension_lc" == "woff" ||
+        "$extension_lc" == "woff2" ||
+        "$extension_lc" == "ttf" ||
+        "$extension_lc" == "eot"
+    ]]; then
+        continue  # Skip static asset URLs
+    fi
+
+    echo "$url"  # Print non-static asset URLs
+done
+
+exit 0

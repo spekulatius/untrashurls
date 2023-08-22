@@ -21,19 +21,19 @@ or
 untrashurls --file ./lots-of-urls
 ```
 
-## `--strict`: The `urinteresting`-mode
+## `filter-static-urls`: The `urinteresting`-mode
 
-Inspired by Tomnomnom's [urinteresting](https://github.com/tomnomnom/hacks/tree/master/urinteresting) there is a mode to achieve a similar output:
+Inspired by Tomnomnom's [urinteresting](https://github.com/tomnomnom/hacks/tree/master/urinteresting) there is a helper script to achieve a similar output:
 
 
 ```bash
-cat ./lots-of-urls | untrashurls --strict
+cat ./lots-of-urls | untrashurls | filter-static-urls
 ```
 
 or
 
 ```bash
-untrashurls --file ./lots-of-urls --strict
+untrashurls --file ./lots-of-urls | filter-static-urls
 ```
 
 This will drop any static assets.

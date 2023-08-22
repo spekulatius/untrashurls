@@ -1,0 +1,107 @@
+#!/bin/bash
+
+# Function to compare actual and expected output
+compare_output() {
+    if [ "$1" == "$2" ]; then
+        echo
+        echo "Test passed"
+    else
+        echo
+        echo "Test failed:"
+        echo "- Expected: $2"
+        echo "- Result: $1"
+    fi
+}
+
+echo
+echo "Testing untrashurls:"
+echo "--------------------"
+
+# Test 1: Passing in
+test_case_1_input="http://example.com"
+test_case_1_expected_output="http://example.com/"
+test_case_1_actual_output=$(echo "$test_case_1_input" | ./untrashurls)
+compare_output "$test_case_1_actual_output" "$test_case_1_expected_output"
+
+# Test 2: File input
+echo "$test_case_1_input" > test_file.txt
+test_case_2_expected_output="http://example.com/"
+test_case_2_actual_output=$(./untrashurls --file test_file.txt)
+compare_output "$test_case_2_actual_output" "$test_case_2_expected_output"
+rm test_file.txt
+
+
+# Test 3: port removal I
+test_case_3_input="http://example.com:80/"
+test_case_3_expected_output="http://example.com/"
+test_case_3_actual_output=$(echo "$test_case_3_input" | ./untrashurls)
+compare_output "$test_case_3_actual_output" "$test_case_3_expected_output"
+
+# Test 4: port removal II
+test_case_4_input="https://example.com:443/"
+test_case_4_expected_output="https://example.com/"
+test_case_4_actual_output=$(echo "$test_case_4_input" | ./untrashurls)
+compare_output "$test_case_4_actual_output" "$test_case_4_expected_output"
+
+# Test 5: port removal III
+test_case_5_input="http://example.com:443/"
+test_case_5_expected_output="http://example.com:443/"
+test_case_5_actual_output=$(echo "$test_case_5_input" | ./untrashurls)
+compare_output "$test_case_5_actual_output" "$test_case_5_expected_output"
+
+
+# Test 6: Basic untrashurls functionality with both utm and att parameters
+test_case_6_input="https://example.com:443/?utm_source=test&att_source=test"
+test_case_6_expected_output="https://example.com/"
+test_case_6_actual_output=$(echo "$test_case_6_input" | ./untrashurls)
+compare_output "$test_case_6_actual_output" "$test_case_6_expected_output"
+
+# Test 7: Combined untrashurls functionality
+test_case_7_input="http://example.com:80/?utm_source=test"
+test_case_7_expected_output="http://example.com/"
+test_case_7_actual_output=$(echo "$test_case_7_input" | ./untrashurls)
+compare_output "$test_case_7_actual_output" "$test_case_7_expected_output"
+
+# Test 8: untrashurls with dropping of static assets
+test_case_8_input="https://example.com/static/image.jpg?att_source=test"
+test_case_8_expected_output=""
+test_case_8_actual_output=$(echo "$test_case_8_input" | ./untrashurls | ./filter-static-urls)
+compare_output "$test_case_8_actual_output" "$test_case_8_expected_output"
+
+
+
+echo
+echo
+echo "Testing filter-static-urls:"
+echo "---------------------------"
+
+# Generate a list of test URLs
+cat <<EOF > test_urls.txt
+https://example.com/index.html
+https://example.com/index.php
+https://example.com/styles.css
+https://example.com/script.js
+https://example.com/image.jpg
+https://example.com/icons/icon.svg
+https://example.com/fonts/font.woff
+https://example.com/document.pdf
+EOF
+
+# Run the filtering script on the generated URLs
+cat test_urls.txt | ./filter-static-urls > filtered_urls.txt
+
+# Expected filtered URLs (manually curated)
+cat <<EOF > expected_filtered_urls.txt
+https://example.com/index.php
+EOF
+
+# Compare the filtered URLs with the expected result
+compare_output "$(cat filtered_urls.txt)" "$(cat expected_filtered_urls.txt)"
+
+# Clean up temporary files
+rm test_urls.txt filtered_urls.txt expected_filtered_urls.txt
+
+echo
+echo
+echo "Tests finished."
+echo

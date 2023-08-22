@@ -1,0 +1,31 @@
+#!/bin/bash
+
+# Function to remove utm and att parameters
+remove_parameters() {
+    trurl \
+        --url-file - \
+        --no-guess-scheme \
+        --trim query="utm_*" --trim query="att_*"
+}
+
+# Function to untrash URLs
+untrash_urls() {
+    trurl \
+        --url-file - \
+        --no-guess-scheme \
+        --set scheme=http | trurl --set scheme=https
+}
+
+# Process input
+if [ "$1" == "--file" ]; then
+    input_file="$2"
+    input_data=$(cat "$input_file")
+else
+    input_data=$(cat)
+fi
+
+# echo "input:"
+# echo "$input_data"
+
+# Print the final output
+echo "$(echo "$input_data" | remove_parameters | sort -u)" | awk NF
