@@ -40,7 +40,7 @@ This will drop any static assets.
 
 ## Installation
 
-You'll need `trurl` and `grep` to run `untrashurls`. You can build and install `trurl` yourself:
+You'll need `trurl` to run `untrashurls`. You can build and install `trurl` yourself:
 
 ```bash
 git clone git@github.com:curl/trurl.git /tmp/trurl
